@@ -40,10 +40,10 @@ JOY_RIGHT   = $01
 JOY_LEFT    = $02
 JOY_DOWN    = $04
 JOY_UP      = $08
-JOY_START   = $10       ; mapped to Enter Key
-JOY_SELECT  = $20       ; mapped to Space Bar
-JOY_Y       = $40       ; mapped to Alt Key
-JOY_B       = $80       ; mapped to Ctrl Key
+JOY_Y       = $40       ; mapped to A Key
+JOY_B       = $80       ; mapped to Z Key
+JOY_A_KEY   = JOY_Y
+JOY_Z_KEY   = JOY_B
 
 ; Interrupt Masks
 VSYNC       = $01
@@ -585,7 +585,7 @@ updateRight:
 
 updateLeft:
     lda Joy
-    and #JOY_Y              ; Alt Key
+    and #JOY_Z_KEY
     beq :++
     lda LPaddleY
     inc
@@ -599,7 +599,7 @@ updateLeft:
     bra paddlesToVera
 
 :   lda Joy
-    and #JOY_B              ; Ctrl Key
+    and #JOY_A_KEY
     beq :++
     lda LPaddleY
     dec
