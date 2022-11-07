@@ -1,6 +1,6 @@
 ; Crazy Pong Demo Game
 ; System: Commander X16
-; Version: Emulator R.38+
+; Version: Emulator R.41
 ; Author: Dusan Strakl
 ; Date: January 2021
 ; Compiler: CC65
@@ -40,8 +40,10 @@ JOY_RIGHT   = $01
 JOY_LEFT    = $02
 JOY_DOWN    = $04
 JOY_UP      = $08
-JOY_CTRL    = $80
-JOY_ALT     = $40
+JOY_START   = $10       ; mapped to Enter Key
+JOY_SELECT  = $20       ; mapped to Space Bar
+JOY_Y       = $40       ; mapped to Alt Key
+JOY_B       = $80       ; mapped to Ctrl Key
 
 ; Interrupt Masks
 VSYNC       = $01
@@ -583,7 +585,7 @@ updateRight:
 
 updateLeft:
     lda Joy
-    and #JOY_ALT
+    and #JOY_Y              ; Alt Key
     beq :++
     lda LPaddleY
     inc
@@ -597,7 +599,7 @@ updateLeft:
     bra paddlesToVera
 
 :   lda Joy
-    and #JOY_CTRL
+    and #JOY_B              ; Ctrl Key
     beq :++
     lda LPaddleY
     dec
