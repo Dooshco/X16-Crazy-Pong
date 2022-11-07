@@ -1,3 +1,10 @@
+; Crazy Pong Demo Game
+; System: Commander X16
+; Version: Emulator R.41 Update
+; Author: Dusan Strakl
+; Date: January 2021, Update: November 2022
+
+
 ;******************************************************************************
 ; Configure Sprites 1:Ball, 2:Left Paddle, 3:Right Paddle
 ; Inputs: none
@@ -80,7 +87,16 @@ InitScreen:
 DisplayPlayfield:
     jsr CLS
 
-    VERA_SET_ADDR $0, 1                 ; Draw top line
+    VERA_SET_ADDR $1B000, 1                 ; Draw top line
+    lda #$A0
+    ldx #$0E
+    ldy #40
+:   sta VERA_DATA0
+    stx VERA_DATA0
+    dey
+    bne :-
+
+    VERA_SET_ADDR $1CD00, 1              ;  Draw bottom line
     lda #$A0
     ldx #$0E
     ldy #80
@@ -89,22 +105,13 @@ DisplayPlayfield:
     dey
     bne :-
 
-    VERA_SET_ADDR $1D00, 1              ;  Draw bottom line
-    lda #$A0
-    ldx #$0E
-    ldy #80
-:   sta VERA_DATA0
-    stx VERA_DATA0
-    dey
-    bne :-
-
-    VERA_SET_ADDR 294, 10               ; Draw Center line
+    VERA_SET_ADDR $1B126, 10            ; Draw Center line
     lda #$6A                            ; Left half
     ldy #14
 :   sta VERA_DATA0
     dey
     bne :-
-    VERA_SET_ADDR 296, 10
+    VERA_SET_ADDR $1B128, 10
     lda #$74                            ; Right half
     ldy #14
 :   sta VERA_DATA0
@@ -120,9 +127,10 @@ DisplayPlayfield:
 ;******************************************************************************
 CLS:
 	stz VERA_CTRL
-    lda #$10
+    lda #$11
 	sta VERA_HIGH
-	stz VERA_MID
+    lda #$B0
+	sta VERA_MID
 	stz VERA_LOW
 
     lda #30
@@ -152,7 +160,7 @@ DisplayDigit:
     asl
     asl
     sta Temp1
-    lda #$2
+    lda #$B2
     sta r0H
     txa
     asl 
@@ -164,7 +172,7 @@ DisplayDigit:
     ldx Temp1
     lda #4
     sta Temp2
-:   lda #$10
+:   lda #$11
 	sta VERA_HIGH
 	lda r0H
 	sta VERA_MID
@@ -201,7 +209,7 @@ DisplayGameOver:
     sta Temp1
 
 start:
-   VERA_SET_ADDR $0E1E,1
+    VERA_SET_ADDR $1BE1E,1
     ldy #0
 :   lda GameOverMessage,y
     sta VERA_DATA0
@@ -241,12 +249,12 @@ DisplayTitle:
     sta r0L
     lda #>Title
     sta r0H
-    lda #3
+    lda #$B3
     sta Temp1                           ; Starting rown
     lda #24
     sta Temp2                           ; Row counter
     stz VERA_CTRL
-    lda #$10
+    lda #$11
 	sta VERA_HIGH
 
     ldy #0

@@ -1,4 +1,4 @@
-; Assembly Demo of Sprite Collision Detection
+; Crazy Pong Demo Game
 ; System: Commander X16
 ; Version: Emulator R.38+
 ; Author: Dusan Strakl
